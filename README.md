@@ -2,9 +2,9 @@
 
 Here are a few effects：
 
-![image-20240104235235787](C:\Users\96153\AppData\Roaming\Typora\typora-user-images\image-20240104235235787.png)
+![image-1](https://github.com/ihmily/image-matting/blob/main/assets/image-1.png)
 
-![image-20240104235305391](C:\Users\96153\AppData\Roaming\Typora\typora-user-images\image-20240104235305391.png)
+![image-2](https://github.com/ihmily/image-matting/blob/main/assets/image-2.png)
 
 &emsp;
 
