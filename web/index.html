@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Matting</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1em;
+            text-align: center;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2em auto;
+            background-color: white;
+            padding: 2em;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        #upload-form {
+            text-align: center;
+            margin-bottom: 2em;
+        }
+
+        #images-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #original-img,
+        #result-img {
+            max-width: 45%;
+            height: auto;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Image Matting</h1>
+    </header>
+    <a href="https://github.com/ihmily"><img style="position: absolute; top: 0; right: 0; border: 0;" decoding="async" width="149" height="149" src="/static/images/forkme_right_gray_6d6d6d.png" class="attachment-full size-full" alt="Fork me on GitHub" loading="lazy" data-recalc-dims="1"></a>
+    <main>
+        <form id="upload-form" enctype="multipart/form-data">
+            <label for="image-upload">Select an image:</label>
+            <input type="file" id="image-upload" accept="image/*" required>
+
+            <label for="model-select">Select a model:</label>
+            <select id="model-select" name="model">
+                {% for model in available_models %}
+                <option value="{{ model }}" {% if model == default_model %}selected{% endif %}>{{ model }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="button" id="run" onclick="uploadImage()">Upload</button>
+        </form>
+
+        <div id="images-container">
+            <img id="original-img" alt=" " src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+            <img id="result-img" alt=" " src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+        </div>
+    </main>
+
+    <script>
+        document.getElementById("image-upload").addEventListener("change", function() {
+            const inputElement = this;
+            const file = inputElement.files[0];
+
+            if (file) {
+                const originalImgElement = document.getElementById("original-img");
+                originalImgElement.src = URL.createObjectURL(file);
+                document.getElementById("result-img").src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+            }
+        });
+
+        async function uploadImage() {
+            const inputElement = document.getElementById("image-upload");
+            const file = inputElement.files[0];
+
+            if (file) {
+                const formData = new FormData();
+                formData.append("image", file);
+
+                const modelSelect = document.getElementById("model-select");
+                const selectedModel = modelSelect.value;
+
+                formData.append("model", selectedModel);
+
+                const response = await fetch("/matting", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    const resultBlob = await response.blob();
+                    const resultImgElement = document.getElementById("result-img");
+                    resultImgElement.src = URL.createObjectURL(resultBlob);
+                } else {
+                    alert("Matting failed. Please try again.");
+                }
+            } else {
+                alert("Please select an image.");
+            }
+        }
+
+        document.getElementById("model-select").addEventListener("change", function() {
+            const newModel = this.value;
+
+            alert(`Switching to model: ${newModel}`);
+
+            fetch(`/switch_model/${newModel}`, {
+                    method: "POST",
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert(`Switched to model: ${newModel}`);
+                })
+                .catch(error => {
+                    alert(`Model switch failed. Please try again. Error: ${error}`);
+                });
+        });
+    </script>
+</body>
+
+</html>
+

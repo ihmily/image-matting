@@ -1,0 +1,10 @@
+fastapi==0.108.0
+opencv-python
+requests
+modelscope>=1.10.0
+torch==2.1.2
+transformers==4.36.2
+sentencepiece==0.1.*
+tensorflow
+python-multipart
+uvicorn
