@@ -4,54 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Matting</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            background-color: #333;
-            color: white;
-            padding: 1em;
-            text-align: center;
-        }
-
-        main {
-            max-width: 800px;
-            margin: 2em auto;
-            background-color: white;
-            padding: 2em;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        #upload-form {
-            text-align: center;
-            margin-bottom: 2em;
-        }
-
-        #images-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        #original-img,
-        #result-img {
-            max-width: 45%;
-            height: auto;
-            border: 1px solid #ccc;
-        }
-    </style>
+    <title>Simple Image Matting</title>
+    <link rel="stylesheet" href="./static/css/style.css">
 </head>
 
 <body>
     <header>
-        <h1>Image Matting</h1>
+        <h1>Simple Image Matting</h1>
     </header>
     <a href="https://github.com/ihmily/image-matting"><img style="position: absolute; top: 0; right: 0; border: 0;" decoding="async" width="149" height="149" src="/static/images/forkme_right_gray_6d6d6d.png" class="attachment-full size-full" alt="Fork me on GitHub" loading="lazy" data-recalc-dims="1"></a>
     <main>
@@ -71,9 +30,14 @@
 
         <div id="images-container">
             <img id="original-img" alt=" " src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+            <img id="mask-img" alt=" " src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
             <img id="result-img" alt=" " src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
         </div>
     </main>
+
+    <footer>
+        <p>&copy; 2024 Hmily. All rights reserved.</p>
+    </footer>
 
     <script>
         document.getElementById("image-upload").addEventListener("change", function() {
@@ -84,6 +48,7 @@
                 const originalImgElement = document.getElementById("original-img");
                 originalImgElement.src = URL.createObjectURL(file);
                 document.getElementById("result-img").src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+                document.getElementById("mask-img").src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
             }
         });
 
@@ -106,9 +71,15 @@
                 });
 
                 if (response.ok) {
-                    const resultBlob = await response.blob();
+                    const responseData = await response.json();
+
                     const resultImgElement = document.getElementById("result-img");
-                    resultImgElement.src = URL.createObjectURL(resultBlob);
+                    resultImgElement.src = responseData.result_image_url;
+
+                    const maskImgElement = document.getElementById("mask-img");
+                    maskImgElement.src = responseData.mask_image_url;
+
+                    console.log(`Matting successful!\nOriginal Image Size: ${responseData.original_image_size.width} x ${responseData.original_image_size.height}\nGeneration Time: ${responseData.generation_time}`);
                 } else {
                     alert("Matting failed. Please try again.");
                 }
