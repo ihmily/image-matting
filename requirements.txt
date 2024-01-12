@@ -8,3 +8,4 @@ sentencepiece==0.1.*
 tensorflow
 python-multipart
 uvicorn
+jinja2
