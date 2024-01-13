@@ -50,6 +50,20 @@ class ModelLoader:
 model_loader = ModelLoader()
 
 
+# remove excess transparent background and crop the image
+def crop_image_by_alpha_channel(input_image: np.ndarray | str, output_path: str):
+    img_array = cv2.imread(input_image, cv2.IMREAD_UNCHANGED) if isinstance(input_image, str) else input_image
+    if img_array.shape[2] != 4:
+        raise ValueError("Input image must have an alpha channel")
+
+    alpha_channel = img_array[:, :, 3]
+    bbox = cv2.boundingRect(alpha_channel)
+    x, y, w, h = bbox
+    cropped_img_array = img_array[y:y + h, x:x + w]
+    cv2.imwrite(output_path, cropped_img_array)
+    return output_path
+    
+
 @app.post("/switch_model/{new_model}")
 async def switch_model(new_model: str):
     if new_model not in model_paths:
@@ -81,7 +95,7 @@ async def matting(image: UploadFile = File(...), model: str = Form(default=defau
     result = selected_model(img)
 
     cv2.imwrite(os.path.join(OUTPUT_FOLDER, image_filename), result[OutputKeys.OUTPUT_IMG])
-    cv2.imwrite(os.path.join(OUTPUT_FOLDER, mask_filename), result['output_img'][:, :, 3])
+    cv2.imwrite(os.path.join(OUTPUT_FOLDER, mask_filename), result[OutputKeys.OUTPUT_IMG][:, :, 3])
 
     response_data = {
         "result_image_url": f"/output/{image_filename}",
@@ -127,7 +141,7 @@ async def matting_url(request: Request, model: str = Form(default=default_model,
     result = selected_model(img)
 
     cv2.imwrite(os.path.join(OUTPUT_FOLDER, image_filename), result[OutputKeys.OUTPUT_IMG])
-    cv2.imwrite(os.path.join(OUTPUT_FOLDER, mask_filename), result['output_img'][:, :, 3])
+    cv2.imwrite(os.path.join(OUTPUT_FOLDER, mask_filename), result[OutputKeys.OUTPUT_IMG][:, :, 3])
 
     response_data = {
         "result_image_url": f"/output/{image_filename}",
