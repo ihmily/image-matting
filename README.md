@@ -1,6 +1,6 @@
 ## Imgae matting
 
-Here are a few effects：
+Here are a few effects(omitting mask images)：
 
 ![image-1](https://github.com/ihmily/image-matting/blob/main/assets/image-1.png)
 
@@ -70,7 +70,15 @@ print("image_url:",server+image_url)
 print("mask_url:",server+mask_url)
 ```
 
-You can freely choose the method you want to upload from above.
+You can freely choose the method you want to upload from above.If you want to get the cropped cutout, you can call `crop_image_by_alpha_channel` function.
+
+&emsp;
+
+## Extended Gallery
+
+![image-3](https://github.com/ihmily/image-matting/blob/main/assets/image-3.png)
+
+![image-4](https://github.com/ihmily/image-matting/blob/main/assets/image-4.png)
 
 &emsp;
 
