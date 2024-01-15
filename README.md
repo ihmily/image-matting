@@ -10,23 +10,53 @@ Here are a few effects(omitting mask images)：
 
 ## How to Run
 
-Firstly, you need to download the project code and install the required dependencies
+**Method 1: Run from Source Code**
+
+Firstly, you need to download the project code and install the required dependencies.
 
 ```
-# python 3.10
+# Python 3.10
 
 git clone https://github.com/ihmily/image-matting.git
 cd image-matting
 pip install -r requirements.txt
 ```
 
-Next, you can use the following command to run the web interface
+Next, use the following command to run the web interface.
 
 ```
 python app.py
 ```
 
-Finally, you can visit  http://127.0.0.1:8000
+Finally, visit http://127.0.0.1:8000/.
+
+&emsp;
+
+**Method 2: Run with Docker**
+
+Simply run the following commands after entering the project folder.
+
+Pull the Docker image.
+
+```
+docker pull ihmily/image-matting:0.0.3
+```
+
+After the image is pulled, run the container.
+
+```
+docker run -p 8000:8000 image-matting:0.0.3
+```
+
+Alternatively, you can build the image yourself.
+
+```
+docker build -t image-matting:0.0.3 .
+```
+
+Once the build is complete, run the container as before. Visit http://127.0.0.1:8000 to perform online image matting.
+
+Feel free to choose the method that suits your preference.
 
 &emsp;
 
