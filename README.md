@@ -45,7 +45,7 @@ docker pull ihmily/image-matting:0.0.3
 After the image is pulled, run the container.
 
 ```
-docker run -p 8000:8000 image-matting:0.0.3
+docker run -p 8000:8000 ihmily/image-matting:0.0.3
 ```
 
 Alternatively, you can build the image yourself.
