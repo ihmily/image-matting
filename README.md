@@ -52,11 +52,10 @@ Alternatively, you can build the image yourself.
 
 ```
 docker build -t image-matting:0.0.3 .
+docker run -p 8000:8000 image-matting:0.0.3
 ```
 
-Once the build is complete, run the container as before. Visit http://127.0.0.1:8000 to perform online image matting.
-
-Feel free to choose the method that suits your preference.
+Lastly, visit http://127.0.0.1:8000 to perform online image matting. Feel free to choose the method that suits your preference.
 
 &emsp;
 
