@@ -42,7 +42,6 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: |
-          ihmily/image-matting:${{ github.ref_name }} 
           ihmily/image-matting:latest
         platforms: linux/amd64,linux/arm64
         cache-from: type=local,src=/tmp/.buildx-cache
