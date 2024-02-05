@@ -39,20 +39,20 @@ Simply run the following commands after entering the project folder.
 Pull the Docker image.
 
 ```
-docker pull ihmily/image-matting:0.0.3
+docker pull ihmily/image-matting:latest
 ```
 
 After the image is pulled, run the container.
 
 ```
-docker run -p 8000:8000 ihmily/image-matting:0.0.3
+docker run -p 8000:8000 ihmily/image-matting:latest
 ```
 
 Alternatively, you can build the image yourself.
 
 ```
-docker build -t image-matting:0.0.3 .
-docker run -p 8000:8000 image-matting:0.0.3
+docker build -t image-matting:latest .
+docker run -p 8000:8000 image-matting:latest
 ```
 
 Lastly, visit http://127.0.0.1:8000 to perform online image matting. Feel free to choose the method that suits your preference.
