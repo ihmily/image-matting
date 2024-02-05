@@ -1,12 +1,13 @@
-httpx
 fastapi==0.108.0
-opencv-python
+httpx
+jinja2
 modelscope>=1.10.0
-torch==2.1.2
-transformers==4.36.2
+opencv-python
+python-multipart
 sentencepiece==0.1.*
 tensorflow
-python-multipart
+torch==2.1.2
+transformers==4.36.2
 uvicorn
-jinja2
+
 
